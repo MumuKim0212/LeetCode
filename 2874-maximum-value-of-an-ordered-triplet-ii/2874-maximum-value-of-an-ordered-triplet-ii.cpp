@@ -18,23 +18,12 @@ class Solution {
 public:
     long long maximumTripletValue(vector<int>& nums) {
         int n = nums.size();
-        long long maxResult = 0;
-
-        // 각 위치까지의 최대 (nums[i] - nums[j]) 값을 계산
-        vector<int> maxDiff(n, 0);
-        int maxSoFar = nums[0];
-
-        for (int i = 1; i < n - 1; i++) {
-            maxDiff[i] = max(maxDiff[i - 1], maxSoFar - nums[i]);
-            maxSoFar = max(maxSoFar, nums[i]);
+        long long res = 0, imax = 0, dmax = 0;
+        for (int k = 0; k < n; k++) {
+            res = max(res, dmax * nums[k]);
+            dmax = max(dmax, imax - nums[k]);
+            imax = max(imax, static_cast<long long>(nums[k]));
         }
-
-        // 각 k 위치에 대해 최대값 계산
-        for (int j = 2; j < n; j++) {
-            long long val = (long long)maxDiff[j - 1] * nums[j];
-            maxResult = max(maxResult, val);
-        }
-
-        return maxResult;
+        return res;
     }
 };
